@@ -10,6 +10,11 @@ procedure Main is
       WDTCTL := WDTPW or WDTIS2 or WDTIS1 or WDTCNTCL;
    end Pet_Watchdog;
 
+   procedure Disable_Watchdog is
+   begin
+      WDTCTL := WDTPW or WDTHOLD;
+   end Disable_Watchdog;
+
    procedure Clock_Setup is
    begin
       MSP430.SR_Set (SCG0);                     --  Disable FLL
@@ -35,6 +40,8 @@ begin
    Pet_Watchdog;
 
    MSP430.Enable_Interrupts;
+
+   Disable_Watchdog;
 
    --  Switch to LPM2
    MSP430.SR_Set (CPUOFF);
