@@ -1,10 +1,10 @@
+--  Retained for reference, not currently compiled
 with msp430fr2355_h; use msp430fr2355_h;
-with Interfaces.C; use Interfaces.C;
+with Interfaces.C;
+with MSP430;
 
-procedure Msp430test is
-
-   procedure Delay_Cycles (N : long_long)
-      with Import, Convention => Intrinsic, External_Name => "__delay_cycles";
+procedure Blink is
+   use type Interfaces.C.unsigned;
 
 begin
 
@@ -18,7 +18,7 @@ begin
       WDTCTL := WDTPW or WDTIS2 or WDTIS1 or WDTCNTCL;   --  Pet the watchdog
 
       P1OUT := P1OUT xor 1;
-      Delay_Cycles (1_000);
+      MSP430.Delay_Cycles (10_000);
    end loop;
 
-end Msp430test;
+end Blink;

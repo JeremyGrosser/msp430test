@@ -9,7 +9,7 @@ licenses = "BSD-3-Clause"
 website = ""
 tags = []
 
-executables = ["msp430test"]
+executables = ["main"]
 
 [[depends-on]]
 gnat_msp430_elf = "^12.2.0"
@@ -23,12 +23,13 @@ bare_runtime = { url='https://github.com/JeremyGrosser/bare_runtime#12.2' }
 BARE_RUNTIME_SWITCHES = "-mcpu=msp430xv2 -mhwmult=f5series"
 
 [build-switches]
-release.optimization = ["-Os", "-gnatn", "-gnatp"]
-development.optimization = ["-O0", "-g"]
+release.optimization = ["-Os", "-gnatn2", "-gnatp"]
+development.optimization = ["-Os", "-g"]
 
 [build-profiles]
-"*" = "release"
+"*" = "development"
 
-[[actions]]
-type = "post-build"
-command = ["gnatprove", "--quiet", "-P", "msp430test.gpr"]
+#[[actions]]
+#type = "post-build"
+#command = ["gnatprove", "--quiet", "-P", "msp430test.gpr"]
+

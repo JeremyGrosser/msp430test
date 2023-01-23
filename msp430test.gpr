@@ -17,7 +17,7 @@ project Msp430test is
    for Object_Dir use "obj/" & Msp430test_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
-   for Main use ("msp430test.adb");
+   for Main use ("main.adb");
 
    MSP430_Support_Files := Project'Project_Dir & "msp430-gcc-support-files/include";
 
@@ -29,14 +29,27 @@ project Msp430test is
 
       for Default_Switches ("Asm_Cpp") use (
          --  See newlib/libgloss/msp430/crt0.S
-         "-DL0"
+         "-DL0",
+         "-DLbss",            --  init .bss
+         "-DLhigh_bss",       --  init .upper.bss
+         "-DLmovedata",       --  copy .data to RAM
+         "-DLmove_highdata",  --  copy .upper.data to RAM
+         "-DLrun_preinit_array",
+         "-DLrun_init_array",
+         "-DLrun_fini_array",
+         "-DLmain",
+         "-DLrun_array"
       );
 
       for Local_Configuration_Pragmas use "gnat.adc";
    end Compiler;
 
    package Binder is
-      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+      for Switches ("Ada") use (
+--         "-Es", --  Symbolic traceback
+--         "-minimal", --  space constrained
+         "-s"        --  require all source files to be present
+      );
    end Binder;
 
    package Install is
@@ -47,7 +60,9 @@ project Msp430test is
       for Switches ("Ada") use (
          "-L" & MSP430_Support_Files,
          "-Wl,-Tmsp430fr2355.ld",
-         "-Wl,--entry=__crt0_start" --  supplied by newlib
+         "-Wl,--entry=__crt0_start", --  supplied by newlib
+         "-Wl,-Map,main.map"
+--         "-Wl,-print-memory-usage"
       );
    end Linker;
 
