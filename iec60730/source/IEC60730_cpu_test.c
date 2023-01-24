@@ -512,7 +512,7 @@ static void stabilizeClocks(void){
 #if defined(__MSP430_HAS_CS__)
 // To support MSP430FR2xx families FR57xx and FR2xx devices have different
 // CS module functioanlity
-#if defined(__MSP430FR2633) || defined(__MSP430FR2632) || defined(__MSP430FR2533) || defined(MSP430FR2532)
+#if defined(__MSP430FR2633) || defined(__MSP430FR2632) || defined(__MSP430FR2533) || defined(MSP430FR2532) || defined(__MSP430FR2355__)
 	do
 	{
 		// Clear XT1 and DCO fault flag

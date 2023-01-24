@@ -20,6 +20,11 @@ project Msp430test is
       "config/"
    );
 
+   for Excluded_Source_Files use (
+      "IEC60730_cpu_test.c",  --  inline assembly errors
+      "IEC60730_gpio_test.c"  --  too many pointer warnings for comfort
+   );
+
    for Object_Dir use "obj/" & Msp430test_Config.Build_Profile;
    for Create_Missing_Dirs use "True";
    for Exec_Dir use "bin";
@@ -30,8 +35,11 @@ project Msp430test is
          "-gnatyM120"
       );
 
+      for Default_Switches ("C") use (
+         "-D__MSP430FR2355__"
+      );
+
       for Default_Switches ("Asm_Cpp") use (
-         "-D__MSP430FR2355__",
          --  See newlib/libgloss/msp430/crt0.S
          "-DL0",
          "-DLbss",            --  init .bss

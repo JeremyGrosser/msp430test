@@ -157,6 +157,10 @@ extern "C"
 #define RAM_START_ADDRESS		0x1C00
 #define RAM_SIZE				0x07F0
 #define STACK_SIZE				160
+#elif defined(__MSP430FR2355__)
+#define RAM_START_ADDRESS		0x2000
+#define RAM_SIZE				0x0FFF
+#define STACK_SIZE				160
 #else
 //***************************************************************************************
 // IF you your device is not listed in above please specify the RAM properties
@@ -236,6 +240,8 @@ extern "C"
 #elif defined(__MSP430F5438A__)
 #define CRC_CHECKSUM_LOCATION		0x1800
 #elif defined(__MSP430FR5969__)
+#define CRC_CHECKSUM_LOCATION		0x1800
+#elif defined(__MSP430FR2355__)
 #define CRC_CHECKSUM_LOCATION		0x1800
 #else
 #define CRC_CHECKSUM_LOCATION
