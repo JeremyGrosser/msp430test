@@ -14,6 +14,8 @@ project Msp430test is
       MSP430_Support_Files,
       "newlib/libgloss/msp430",
       "driverlib/MSP430FR2xx_4xx",
+      "iec60730/include",
+      "iec60730/source",
       "src/",
       "config/"
    );
