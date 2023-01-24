@@ -8,8 +8,12 @@ project Msp430test is
 
    for Languages use ("Ada", "C", "Asm_Cpp");
 
+   MSP430_Support_Files := Project'Project_Dir & "msp430-gcc-support-files/include";
+
    for Source_Dirs use (
+      MSP430_Support_Files,
       "newlib/libgloss/msp430",
+      "driverlib/MSP430FR2xx_4xx",
       "src/",
       "config/"
    );
@@ -19,15 +23,13 @@ project Msp430test is
    for Exec_Dir use "bin";
    for Main use ("main.adb");
 
-   MSP430_Support_Files := Project'Project_Dir & "msp430-gcc-support-files/include";
-
    package Compiler is
       for Default_Switches ("Ada") use Msp430test_Config.Ada_Compiler_Switches & (
-         "-I" & MSP430_Support_Files,
          "-gnatyM120"
       );
 
       for Default_Switches ("Asm_Cpp") use (
+         "-D__MSP430FR2355__",
          --  See newlib/libgloss/msp430/crt0.S
          "-DL0",
          "-DLbss",            --  init .bss
