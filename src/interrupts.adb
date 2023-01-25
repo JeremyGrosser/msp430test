@@ -1,6 +1,5 @@
 with Interfaces.C; use Interfaces.C;
 with msp430fr2355_h; use msp430fr2355_h;
-with System.Machine_Code;
 
 package body Interrupts is
 
@@ -19,8 +18,6 @@ package body Interrupts is
          Uptime := Uptime + 1;
          SYSCFG0 := FRWPPW or PFWP;
       end if;
-
-      System.Machine_Code.Asm ("popm #1, r10", Volatile => True);
-      System.Machine_Code.Asm ("reti", Volatile => True);
    end ISR_RTC;
+
 end Interrupts;
