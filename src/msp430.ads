@@ -17,12 +17,12 @@ is
       with Inline_Always;
    --  Clear the GIE flag in the Status Register
 
-   procedure SR_Set
+   procedure Set_SR
       (X : Unsigned_16)
       with Inline_Always;
    --  Set X bits in the Status Register
 
-   procedure SR_Clear
+   procedure Clear_SR
       (X : Unsigned_16)
       with Inline_Always;
    --  Clear X bits in the Status Register

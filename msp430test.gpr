@@ -13,17 +13,17 @@ project Msp430test is
    for Source_Dirs use (
       MSP430_Support_Files,
       "newlib/libgloss/msp430",
-      "driverlib/MSP430FR2xx_4xx",
-      "iec60730/include",
-      "iec60730/source",
+--      "driverlib/MSP430FR2xx_4xx",
+--      "iec60730/include",
+--      "iec60730/source",
       "src/",
       "config/"
    );
 
-   for Excluded_Source_Files use (
-      "IEC60730_cpu_test.c",  --  inline assembly errors
-      "IEC60730_gpio_test.c"  --  too many pointer warnings for comfort
-   );
+--   for Excluded_Source_Files use (
+--      "IEC60730_cpu_test.c",  --  inline assembly errors
+--      "IEC60730_gpio_test.c"  --  too many pointer warnings for comfort
+--   );
 
    for Object_Dir use "obj/" & Msp430test_Config.Build_Profile;
    for Create_Missing_Dirs use "True";

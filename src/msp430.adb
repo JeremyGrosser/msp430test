@@ -19,22 +19,22 @@ is
       Asm ("dint { nop", Volatile => True);
    end Disable_Interrupts;
 
-   procedure SR_Set
+   procedure Set_SR
       (X : Unsigned_16)
    is
    begin
       Asm ("nop { bis.w %0, SR { nop",
          Inputs   => Unsigned_16'Asm_Input ("ri", X),
          Volatile => True);
-   end SR_Set;
+   end Set_SR;
 
-   procedure SR_Clear
+   procedure Clear_SR
       (X : Unsigned_16)
    is
    begin
       Asm ("bic.w %0, SR { nop",
          Inputs   => Unsigned_16'Asm_Input ("ri", X),
          Volatile => True);
-   end SR_Clear;
+   end Clear_SR;
 
 end MSP430;
