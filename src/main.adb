@@ -1,50 +1,40 @@
-with Interfaces.C;
+with Interfaces.C; use Interfaces.C;
 with msp430fr2355_h; use msp430fr2355_h;
 with MSP430;
+with MSP430.Interrupts;
+pragma Unreferenced (MSP430.Interrupts);
 
 procedure Main is
-   use type Interfaces.C.unsigned;
-
-   procedure Pet_Watchdog is
+   procedure UART_Init is
+      --  P3.3 = TXD
+      --  P3.4 = RXD
+      Pins  : constant := 2#0000_1100#;
    begin
-      WDTCTL := WDTPW or WDTIS2 or WDTIS1 or WDTCNTCL;
-   end Pet_Watchdog;
+      P3DIR := P3DIR or Pins;
+      P3REN := P3REN or Pins;
+      P3OUT := P3OUT or Pins;
+      P3SEL0 := P3SEL0 or Pins;
+      P3SEL1 := P3SEL1 and not Pins;
 
-   procedure Disable_Watchdog is
-   begin
-      WDTCTL := WDTPW or WDTHOLD;
-   end Disable_Watchdog;
+      UCA0CTLW0 := UCSWRST;
+      UCA0CTLW0 := UCA0CTLW0 or UCSSEL_u_SMCLK;
 
-   procedure Clock_Setup is
-   begin
-      MSP430.SR_Set (SCG0);                     --  Disable FLL
+      --  Table 22-5 (BRCLK = 1_000_000, Baud = 9_600)
+      UCA0MCTLW := UCOS16 or UCBRF3 or UCBRS5;
+      UCA0BRW := 6;
 
-      CSCTL3 := CSCTL3 or SELREF_u_REFOCLK;     --  Set REFO as FLL source
-      CSCTL1 := DCOFTRIMEN_1 or                 --  DCO Range 8 MHz
-                DCOFTRIM0 or
-                DCOFTRIM1 or
-                DCORSEL_3;
-      CSCTL2 := FLLD_0 + 243;                   --  DCODIV = 8 MHz
+      --  Enable receive interrupt
+      UCA0IE := UCRXIE;
 
-      MSP430.Delay_Cycles (3);
-      MSP430.SR_Clear (SCG0);                   --  Enable FLL
-
-      --  TODO: Software_Trim;
-
-      CSCTL4 := SELMS_u_DCOCLKDIV or SELA_u_REFOCLK;  --  Set REFO as ACLK = 32768 Hz
-   end Clock_Setup;
-
+      UCA0CTLW0 := UCA0CTLW0 and not UCSWRST;
+   end UART_Init;
 begin
-   Pet_Watchdog;
-   Clock_Setup;
-   Pet_Watchdog;
+   WDTCTL := WDTPW or WDTHOLD; --  disable watchdog
 
+   UART_Init;
+
+   --  Global interrupt enable
    MSP430.Enable_Interrupts;
-
-   Disable_Watchdog;
-
-   --  Switch to LPM2
-   MSP430.SR_Set (CPUOFF);
 
    loop
       null;

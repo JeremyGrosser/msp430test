@@ -1,6 +1,8 @@
 with System.Machine_Code; use System.Machine_Code;
 
-package body MSP430 is
+package body MSP430
+   with SPARK_Mode => Off
+is
 
    procedure NOP is
    begin
@@ -21,7 +23,7 @@ package body MSP430 is
       (X : Unsigned_16)
    is
    begin
-      Asm ("bis.w %0, SR",
+      Asm ("nop { bis.w %0, SR { nop",
          Inputs   => Unsigned_16'Asm_Input ("ri", X),
          Volatile => True);
    end SR_Set;
@@ -30,7 +32,7 @@ package body MSP430 is
       (X : Unsigned_16)
    is
    begin
-      Asm ("bic.w %0, SR",
+      Asm ("bic.w %0, SR { nop",
          Inputs   => Unsigned_16'Asm_Input ("ri", X),
          Volatile => True);
    end SR_Clear;

@@ -5,7 +5,9 @@ pragma Warnings (Off, "-gnatwu");
 
 with Interfaces.C; use Interfaces.C;
 
-package msp430fr2355_h is
+package msp430fr2355_h
+   with Preelaborate
+is
 
    BIT0 : constant := (16#0001#);  --  msp430-gcc-support-files/include/msp430fr2355.h:70
    BIT1 : constant := (16#0002#);  --  msp430-gcc-support-files/include/msp430fr2355.h:71

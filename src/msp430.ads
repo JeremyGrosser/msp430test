@@ -1,7 +1,9 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces; use Interfaces;
 
-package MSP430 is
+package MSP430
+   with Preelaborate
+is
 
    procedure NOP
       with Inline_Always;
