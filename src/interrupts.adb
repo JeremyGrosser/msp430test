@@ -3,11 +3,6 @@ with msp430fr2355_h; use msp430fr2355_h;
 
 package body Interrupts is
 
-   type Seconds is mod 2 ** 64;
-
-   Uptime : Seconds
-      with Suppress_Initialization, Linker_Section => ".info";
-
    procedure ISR_RTC is
    begin
       if (RTCIV and RTCIV_u_RTCIFG) /= 0 then
