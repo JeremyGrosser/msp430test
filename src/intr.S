@@ -59,6 +59,5 @@ decl_isr isr_sys_nmi
 isr_reset:
     jmp __crt0_start
 
-# hang
-__gnat_irq_trap:
+__gnat_irq_trap: # hang
     jmp __gnat_irq_trap

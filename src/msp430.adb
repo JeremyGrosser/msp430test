@@ -1,8 +1,6 @@
 with System.Machine_Code; use System.Machine_Code;
 
-package body MSP430
-   with SPARK_Mode => Off
-is
+package body MSP430 is
 
    procedure NOP is
    begin

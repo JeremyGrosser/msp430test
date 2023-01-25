@@ -28,10 +28,9 @@ begin
       CSCTL7 := CSCTL7 and not XT1OFFG;
    end loop;
 
-   --  Global interrupt enable
-   MSP430.Set_SR (GIE);
-
+   --  LPM3
+   MSP430.Set_SR (GIE or CPUOFF or SCG0 or SCG1);
    loop
-      MSP430.Set_SR (CPUOFF);
+      null;
    end loop;
 end Main;

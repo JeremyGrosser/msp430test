@@ -1,4 +1,4 @@
-pragma SPARK_Mode (On);
+--  pragma SPARK_Mode (On);
 pragma Restrictions (No_Secondary_Stack);
 
 --  ZFP
