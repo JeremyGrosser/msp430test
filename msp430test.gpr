@@ -70,11 +70,11 @@ project Msp430test is
 
    package Linker is
       for Switches ("Ada") use (
-         "-L" & MSP430_Support_Files,
-         "-Wl,-Tmsp430fr2355.ld",
-         "-Wl,--entry=__crt0_start", --  supplied by newlib
-         "-Wl,-Map,main.map"
---         "-Wl,-print-memory-usage"
+         "-Wl,-L" & MSP430_Support_Files,
+         "-Wl,-T" & Project'Project_Dir & "msp430fr2355.ld",
+--  "-Wl,--entry=__crt0_start", --  supplied by newlib
+         "-Wl,-Map,main.map",
+         "src/intr.S"
       );
    end Linker;
 

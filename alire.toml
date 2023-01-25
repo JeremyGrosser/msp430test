@@ -29,6 +29,6 @@ development.optimization = ["-Os", "-g"]
 [build-profiles]
 "*" = "development"
 
-[[actions]]
-type = "post-build"
-command = ["gnatprove", "--quiet", "-P", "msp430test.gpr"]
+#[[actions]]
+#type = "post-build"
+#command = ["gnatprove", "--quiet", "-P", "msp430test.gpr"]

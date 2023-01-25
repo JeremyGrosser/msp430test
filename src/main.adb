@@ -1,42 +1,34 @@
 with Interfaces.C; use Interfaces.C;
+with Interfaces; use Interfaces;
 with msp430fr2355_h; use msp430fr2355_h;
 with MSP430;
-with MSP430.Interrupts;
-pragma Unreferenced (MSP430.Interrupts);
+with MSP430.RTC;
 
 procedure Main is
-   procedure UART_Init is
-      --  P3.3 = TXD
-      --  P3.4 = RXD
-      Pins  : constant := 2#0000_1100#;
-   begin
-      P3DIR := P3DIR or Pins;
-      P3REN := P3REN or Pins;
-      P3OUT := P3OUT or Pins;
-      P3SEL0 := P3SEL0 or Pins;
-      P3SEL1 := P3SEL1 and not Pins;
-
-      UCA0CTLW0 := UCSWRST;
-      UCA0CTLW0 := UCA0CTLW0 or UCSSEL_u_SMCLK;
-
-      --  Table 22-5 (BRCLK = 1_000_000, Baud = 9_600)
-      UCA0MCTLW := UCOS16 or UCBRF3 or UCBRS5;
-      UCA0BRW := 6;
-
-      --  Enable receive interrupt
-      UCA0IE := UCRXIE;
-
-      UCA0CTLW0 := UCA0CTLW0 and not UCSWRST;
-   end UART_Init;
 begin
-   WDTCTL := WDTPW or WDTHOLD; --  disable watchdog
+   --  stop watchdog
+   WDTCTL := WDTPW or WDTHOLD;
 
-   UART_Init;
+   --  configure P1.0 as output
+   P1OUT := P1OUT and not 1;
+   P1DIR := P1DIR or 1;
+
+   --  32_768 Hz crystal on P2.6, P2.7
+   P2SEL1 := P2SEL1 or BIT6 or BIT7;
+
+   --  Wait for XT1 stable
+   --  while (SFRIFG1 and OFIFG) /= 0 loop
+   --     CSCTL7 := CSCTL7 and not (XT1OFFG or DCOFFG);
+   --  end loop;
+
+   MSP430.RTC.Configure;
 
    --  Global interrupt enable
    MSP430.Enable_Interrupts;
 
    loop
       null;
+      --  LPM3
+      --  MSP430.SR_Set (SCG1 or SCG0 or CPUOFF);
    end loop;
 end Main;
